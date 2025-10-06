@@ -1,0 +1,31 @@
+{
+  "name": "kipu-bank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hardhat.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/savg92/kipu-bank.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/savg92/kipu-bank/issues"
+  },
+  "homepage": "https://github.com/savg92/kipu-bank#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition-viem": "^3.0.3",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.0",
+    "dotenv": "^17.2.3",
+    "hardhat": "^3.0.6",
+    "viem": "^2.37.12"
+  },
+  "type": "module"
+}
