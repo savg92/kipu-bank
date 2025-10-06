@@ -1,6 +1,15 @@
-# KipuBank
+# 🏦 KipuBank
 
-A decentralized ETH vault with safety limits built to showcase production-quality Solidity practices. This project is part of a Web3 learning portfolio and follows strict security and documentation conventions.
+> A production-grade decentralized ETH vault with safety limits
+
+**KipuBank** is a Web3 educational portfolio project demonstrating professional Solidity development practices. It implements a secure ETH vault with withdrawal limits, deposit caps, and comprehensive safety patterns.
+
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.24-363636?logo=solidity)](https://soliditylang.org/)
+[![Hardhat](https://img.shields.io/badge/Hardhat-3.0-yellow?logo=ethereum)](https://hardhat.org/)
+
+**🌐 Live on Sepolia**: [View on Etherscan](https://sepolia.etherscan.io/address/0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe) | [View on Blockscout](https://eth-sepolia.blockscout.com/address/0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe)
+
+---
 
 ## Features
 
@@ -107,57 +116,124 @@ Constructor arguments (Wei):
 
 ## Verify on Etherscan
 
+The deployed contract is already verified. To verify a new deployment:
+
 ```bash
+# Option 1: Hardhat plugin
 npx hardhat verify --network sepolia <DEPLOYED_ADDRESS> \
   "100000000000000000000" "1000000000000000000"
+
+# Option 2: Direct API (more reliable)
+npm run verify:sepolia:api
 ```
 
-## Interact
+**Note**: The direct API script (`scripts/etherscan-verify.js`) has proven more reliable than the Hardhat plugin for this configuration.
 
-- Etherscan (recommended): Use Read/Write Contract tabs after verification.
-- Hardhat console (example):
+## Interact with Contract
 
-```bash
-# Replace with your deployed address
-export ADDR=0xYourDeployedAddress
+### Option 1: Etherscan (Recommended)
 
-# Open console on Sepolia
-npx hardhat console --network sepolia
+Visit the verified contract on Etherscan:
 
-# In the console (examples with ethers-style if available)
-// await ethers.getSigner()
-// const bank = await ethers.getContractAt("KipuBank", process.env.ADDR)
-// await bank.deposit({ value: ethers.parseEther("0.1") })
-// await bank.withdraw(ethers.parseEther("0.05"))
+- **Read Contract**: View balances, counts, and contract state
+- **Write Contract**: Connect wallet and interact (deposit, withdraw)
+
+Direct link: https://sepolia.etherscan.io/address/0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe#writeContract
+
+### Option 2: Custom Scripts
+
+Write Node.js scripts using Viem or Ethers to interact programmatically. Example structure:
+
+```javascript
+import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
+import { sepolia } from 'viem/chains';
+import { privateKeyToAccount } from 'viem/accounts';
+
+const account = privateKeyToAccount(process.env.PRIVATE_KEY);
+const client = createWalletClient({
+	account,
+	chain: sepolia,
+	transport: http(process.env.SEPOLIA_RPC_URL),
+});
+
+// Example: deposit 0.1 ETH
+// const hash = await client.writeContract({
+//   address: '0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe',
+//   abi: KipuBankABI,
+//   functionName: 'deposit',
+//   value: parseEther('0.1')
+// });
 ```
 
-Note: For this project we use Ignition + Viem for deployment. Interaction can be done via Etherscan or by writing small scripts. Console examples may vary depending on toolbox configuration.
+## Deployed Contract
 
-## Addresses
+### Sepolia Testnet
 
-- Network: Sepolia
-- Contract: <to-be-filled-after-deploy>
-- Etherscan: <to-be-filled-after-verify>
+- **Contract Address**: `0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe`
+- **Etherscan**: https://sepolia.etherscan.io/address/0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe
+- **Blockscout**: https://eth-sepolia.blockscout.com/address/0x0eFbf4be712Ed78f899b306B5d919Bb167676ebe
+- **Bank Cap**: 100 ETH
+- **Max Withdrawal Per Transaction**: 1 ETH
+
+**Status**: ✅ Verified on Etherscan and Blockscout
 
 ## Troubleshooting
 
 - Ensure Node.js >= 22.10 for Hardhat 3
-- Ensure `.env` values are set and correct
+- Ensure `.env` values are set and correct (run `npm run preflight` to validate)
 - Get Sepolia ETH from:
   - https://sepoliafaucet.com/
   - https://www.alchemy.com/faucets/ethereum-sepolia
+- If Hardhat verify fails, use the direct API script: `npm run verify:sepolia:api`
 
 ## Project Structure
 
 ```
 kipu-bank/
 ├── contracts/
-│   └── KipuBank.sol
+│   └── KipuBank.sol              # Main contract
 ├── ignition/
 │   └── modules/
-│       └── KipuBank.js
+│       └── KipuBank.js           # Ignition deployment module
 ├── scripts/
-│   └── deploy.js   # deployment guide
-├── hardhat.config.js
+│   ├── etherscan-verify.js      # Direct Etherscan API verification
+│   ├── get-address.js           # Read deployed address from Ignition
+│   └── preflight.js             # Validate .env configuration
+├── .env.example                 # Environment template
+├── hardhat.config.js            # Hardhat 3 configuration (ESM)
+├── package.json                 # Project dependencies and scripts
 └── README.md
 ```
+
+## Available Scripts
+
+```bash
+npm run compile              # Compile contracts
+npm run deploy:local         # Deploy to local Hardhat network
+npm run deploy:sepolia       # Deploy to Sepolia testnet
+npm run verify:sepolia       # Verify on Etherscan (Hardhat plugin)
+npm run verify:sepolia:api   # Verify via direct Etherscan API
+npm run preflight           # Validate .env configuration
+npm run get:address         # Get deployed address from Ignition artifact
+```
+
+## Development Notes
+
+This project uses:
+
+- **Hardhat 3** (ESM configuration)
+- **Viem** for web3 interactions
+- **Hardhat Ignition** for deployments
+- Solidity **0.8.24** with optimizer enabled (200 runs)
+- EVM target: **Shanghai**
+
+## Author
+
+**Santiago Valenzuela**
+
+- GitHub: [@savg92](https://github.com/savg92)
+- Portfolio: [savgdev.vercel.app](http://savgdev.vercel.app)
+
+---
+
+**📚 Educational Project** | Built as part of a Web3 professional development portfolio | ⭐ Star this repo if you found it helpful!
