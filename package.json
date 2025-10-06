@@ -7,7 +7,13 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "hardhat compile",
+    "deploy:local": "hardhat ignition deploy ignition/modules/KipuBank.js",
+    "predeploy:sepolia": "node scripts/preflight.js",
+    "deploy:sepolia": "npm run predeploy:sepolia && hardhat ignition deploy ignition/modules/KipuBank.js --network sepolia",
+    "verify:sepolia": "hardhat verify --network sepolia $(node scripts/get-address.js) 100000000000000000000 1000000000000000000",
+    "verify:sepolia:api": "node scripts/etherscan-verify.js"
   },
   "repository": {
     "type": "git",

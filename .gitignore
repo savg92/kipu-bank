@@ -53,6 +53,14 @@ pip-wheel-metadata/
 *.pyo
 *.pyd
 
+# Hardhat
+artifacts/
+cache/
+typechain-types/
+
+# Hardhat Ignition deployments (all chains - document addresses in README)
+ignition/deployments/
+
 # IDEs and editors
 .vscode/
 .history/
@@ -79,7 +87,17 @@ Icon?
 # macOS Finder tags
 .DS_Store
 
-# guide.md and prd
+# Project planning documents (kept local, not in repo)
 Guide.md
 PRD.md
 plan.md
+
+# Lock files (npm handles package-lock.json automatically)
+# Uncomment if using yarn or pnpm:
+# yarn.lock
+# pnpm-lock.yaml
+
+# .github folder and its contents
+.github/
+.github/*
+.github/workflows/

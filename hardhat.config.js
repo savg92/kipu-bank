@@ -6,6 +6,21 @@ dotenvConfig();
 
 const { PRIVATE_KEY, SEPOLIA_RPC_URL, ETHERSCAN_API_KEY } = process.env;
 
+// Gentle warnings to help avoid common mistakes
+if (SEPOLIA_RPC_URL && !/sepolia/i.test(SEPOLIA_RPC_URL)) {
+	console.warn(
+		'[warn] SEPOLIA_RPC_URL does not include "sepolia". Did you set a mainnet URL by mistake?'
+	);
+}
+if (
+	PRIVATE_KEY &&
+	!(PRIVATE_KEY.startsWith('0x') && PRIVATE_KEY.length === 66)
+) {
+	console.warn(
+		'[warn] PRIVATE_KEY format looks unusual. Expected 0x + 64 hex characters (length 66).'
+	);
+}
+
 /** @type import('hardhat/config').HardhatUserConfig */
 export default {
 	plugins: [hardhatToolboxViem, hardhatIgnitionViem],
@@ -24,7 +39,11 @@ export default {
 					: [],
 		},
 	},
-	etherscan: {
-		apiKey: ETHERSCAN_API_KEY || '',
+	// Hardhat v3 uses a new verify config structure
+	verify: {
+		etherscan: {
+			apiKey: ETHERSCAN_API_KEY || '',
+			enabled: true,
+		},
 	},
 };
